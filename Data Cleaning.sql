@@ -1,9 +1,11 @@
 
 -- Selecting all data
+
 Select * 
 from dbo.HouseData
 
 --Standardizing Date Format
+
 Select SaleDateConverted, Convert(Date, SaleDate)
 from dbo.HouseData
 
@@ -19,12 +21,14 @@ Set SaleDateConverted = Convert(Date,SaleDate)
 -- Populating Property Address Data
 
 --1. Checking where PropertyAddress is null
+
 Select * 
 from dbo.HouseData
 where PropertyAddress is null
 order by ParcelID
 
 --2. Join Table ParcelId with UniqueID and fill it with property address
+
 Select A.ParcelID,A.PropertyAddress, 
 B.ParcelID, B.PropertyAddress, 
 ISNULL(A.PropertyAddress,B.PropertyAddress) as UpdatedAddress
@@ -134,6 +138,7 @@ SET SoldAsVacant = CASE When SoldAsVacant = 'N' THEN 'NO'
 
 -- Removing Duplicates
 --Finding Duplicates
+
 With CTERowNum As(
 select *,
 	ROW_NUMBER() OVER(
@@ -146,7 +151,9 @@ select *,
 					UniqueID
 					) row_num
 	from dbo.HouseData)
+	
 --Delete duplicates
+
 DELETE
 from CTERowNum
 where row_num > 1
